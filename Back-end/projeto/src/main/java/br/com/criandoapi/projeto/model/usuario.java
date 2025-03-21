@@ -3,7 +3,7 @@ package br.com.criandoapi.projeto.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "usuarios")
 public class usuario {
 
     @Id
@@ -11,11 +11,14 @@ public class usuario {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "nome", length = 200, nullable = true, unique = true)
+    @Column(name = "nome_completo", length = 200, nullable = true)
     private String nome;
 
-    @Column(name = "email", length = 100, nullable = true, unique = true)
+    @Column(name = "email", length = 100, nullable = true)
     private String email;
+
+    @Column(name = "username", length = 100, nullable = true)
+    private String username;
 
     @Column(name = "senha", columnDefinition = "TEXT", nullable = true)
     private String senha;
@@ -63,5 +66,11 @@ public class usuario {
         this.telefone = telefone;
     }
 
+    public String getUsername() {
+        return username;
+    }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }
