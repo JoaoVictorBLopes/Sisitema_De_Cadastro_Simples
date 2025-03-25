@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/usuarios")
 
 public class usuarioController{
@@ -22,8 +23,8 @@ public class usuarioController{
 
     @PostMapping
     public usuario criarUsuario (@RequestBody usuario usuario) {
-       usuario usuarioNovo = dao.save(usuario);
-       return usuarioNovo;
+       usuario usuarioCriado = dao.save(usuario);
+       return usuarioCriado;
     }
 
     @PutMapping

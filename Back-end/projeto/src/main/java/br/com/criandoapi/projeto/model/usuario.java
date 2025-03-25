@@ -11,7 +11,7 @@ public class usuario {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "nome_completo", length = 200, nullable = true)
+    @Column(name = "nome", length = 200, nullable = true)
     private String nome;
 
     @Column(name = "email", length = 100, nullable = true)

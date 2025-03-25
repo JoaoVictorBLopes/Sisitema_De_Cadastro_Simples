@@ -1,12 +1,13 @@
 const fomulario = document.querySelector("form");
 const Inome = document.querySelector(".nome");
 const Iemail = document.querySelector(".email");
+const Iusername = document.querySelector(".username");
 const Isenha = document.querySelector(".senha");
 const Itel = document.querySelector(".tel");
 
 function cadastrar () {
 
-    fetch("http://locahost:8080/cadastrar",
+    fetch("http://localhost:8080/usuarios",
         {
             headers: {
                 'Accept': 'application/json',
@@ -16,6 +17,7 @@ function cadastrar () {
             body: JSON.stringify({
                 nome: Inome.value,
                 email: Iemail.value,
+                username: Iusername.value,
                 senha: Isenha.value,
                 telefone: Itel.value,
             })
@@ -27,6 +29,7 @@ function cadastrar () {
 function limpar() {
     Inome.value = "";
     Iemail.value = "";
+    Iusername.value = "";
     Isenha.value = "";
     Itel.value = "";
 };
