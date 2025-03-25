@@ -1,11 +1,12 @@
 package br.com.criandoapi.projeto.controller;
-import br.com.criandoapi.projeto.DAO.IUsuario;
+import br.com.criandoapi.projeto.repository.IUsuario;
 import br.com.criandoapi.projeto.model.usuario;
+import br.com.criandoapi.projeto.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
@@ -15,31 +16,31 @@ public class usuarioController{
 
     @Autowired
     private IUsuario dao;
+    private UsuarioService usuarioService;
+
+    public usuarioController (UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
 
     @GetMapping
-    public List<usuario> listaUsuarios () {
-        return (List<usuario>) dao.findAll();
+    public ResponseEntity<List<usuario>> listaUsuarios () {
+        return ResponseEntity.status(200).body(usuarioService.ListarUsuario());
     }
 
     @PostMapping
-    public usuario criarUsuario (@RequestBody usuario usuario) {
-       usuario usuarioCriado = dao.save(usuario);
-       return usuarioCriado;
+    public ResponseEntity<usuario> criarUsuario (@RequestBody usuario usuario) {
+       return ResponseEntity.status(201).body(usuarioService.criarUsuario(usuario));
     }
 
     @PutMapping
-    public usuario editarUsuario (@RequestBody usuario usuario) {
+    public ResponseEntity<usuario> editarUsuario (@RequestBody usuario usuario) {
         usuario usuarioNovo = dao.save(usuario);
-        return usuarioNovo;
+        return ResponseEntity.status(201).body(usuarioNovo);
     }
 
     @DeleteMapping("/{id}")
-    public Optional<usuario> excluirUsuario (@PathVariable int id) {
-        Optional<usuario> usuario = dao.findById(id);
+    public ResponseEntity<?> excluirUsuario (@PathVariable int id) {
         dao.deleteById(id);
-        return usuario;
+        return ResponseEntity.status(204).build();
     }
-
-
-
 }
