@@ -1,6 +1,7 @@
 package br.com.criandoapi.projeto.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
@@ -13,19 +14,26 @@ public class usuario {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "nome", length = 200, nullable = true)
+    @NotBlank(message = "O nome é obrigatório!")
+    @Size(min = 3, message = "O nome deve ter no minimo 3 caracteres")
+    @Column(name = "nome", length = 200, nullable = false)
     private String nome;
 
-    @Column(name = "email", length = 100, nullable = true)
+    @Email(message = "Insira um email valido!")
+    @NotBlank(message = "O email é obrigatório")
+    @Column(name = "email", length = 100, nullable = false)
     private String email;
 
-    @Column(name = "username", length = 100, nullable = true)
+    @NotBlank(message = "O username é obrigatório!")
+    @Column(name = "username", length = 100, nullable = false)
     private String username;
 
-    @Column(name = "senha", columnDefinition = "TEXT", nullable = true)
+    @NotBlank(message = "A senha é obrigatória!")
+    @Column(name = "senha", columnDefinition = "TEXT", nullable = false)
     private String senha;
 
-    @Column(name = "telefone", length = 15, nullable = true)
+    @NotBlank(message = "O telefone é obrigatório!")
+    @Column(name = "telefone", length = 15, nullable = false)
     private String telefone;
 
 }

@@ -2,12 +2,18 @@ package br.com.criandoapi.projeto.controller;
 import br.com.criandoapi.projeto.repository.IUsuario;
 import br.com.criandoapi.projeto.model.usuario;
 import br.com.criandoapi.projeto.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
@@ -27,12 +33,12 @@ public class usuarioController{
     }
 
     @PostMapping
-    public ResponseEntity<usuario> criarUsuario (@RequestBody usuario usuario) {
+    public ResponseEntity<usuario> criarUsuario (@Valid @RequestBody usuario usuario) {
        return ResponseEntity.status(201).body(usuarioService.criarUsuario(usuario));
     }
 
     @PutMapping
-    public ResponseEntity<usuario> editarUsuario (@RequestBody usuario usuario) {
+    public ResponseEntity<usuario> editarUsuario (@Valid @RequestBody usuario usuario) {
         return ResponseEntity.status(200).body(usuarioService.editarUsuario(usuario));
     }
 
@@ -43,11 +49,23 @@ public class usuarioController{
     }
 
     @PostMapping("/login")
-    public ResponseEntity<usuario> validarSenha(@RequestBody usuario usuario) {
+    public ResponseEntity<usuario> validarSenha(@Valid @RequestBody usuario usuario) {
         Boolean valid = usuarioService.validarSenha(usuario);
         if (!valid) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         return ResponseEntity.status(200).build();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationException(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 }
